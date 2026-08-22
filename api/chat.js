@@ -75,7 +75,7 @@ export default async function handler(req, res) {
     const visitorContext = `\n\nVisitor context: name = ${name || "unknown"}, stated intent = ${intent || "unknown"}.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents,
       config: {
         systemInstruction: BRIEFING + visitorContext,
