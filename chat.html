@@ -118,17 +118,19 @@ const CANNED = [
 let cannedIdx = 0;
 
 /* ---- the one place a real API goes ---- */
-function getReply(userText){
-  return new Promise(function(resolve){
-    setTimeout(function(){
-      const t = (userText || '').toLowerCase();
-      if (t.indexOf('email') > -1 || t.indexOf('contact') > -1) {
-        resolve("The fastest route is email — Nihal replies within a day or so.");
-        return;
-      }
-      resolve(CANNED[cannedIdx++ % CANNED.length]);
-    }, 1200);
+async function getReply(userText){
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages: messages.filter(m => m.role === 'user' || m.role === 'assistant'),
+      name: visitorName,
+      intent: visitorIntent
+    })
   });
+  if (!res.ok) throw new Error('chat_failed');
+  const data = await res.json();
+  return data.reply;
 }
 
 /* ---- render ---- */
