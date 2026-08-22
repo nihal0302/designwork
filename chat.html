@@ -95,6 +95,14 @@ let messages = [];               // {role:'assistant'|'user'|'error', text, at}
 let pendingUI = null;            // 'name' | 'intent' | 'suggestions' | null
 let typing = false;
 
+// One id per browser tab/visit, so every message from the same person
+// groups together in the sheet instead of looking like strangers.
+let sessionId = sessionStorage.getItem('chatSessionId');
+if (!sessionId) {
+  sessionId = crypto.randomUUID();
+  sessionStorage.setItem('chatSessionId', sessionId);
+}
+
 const thread = document.getElementById('thread');
 const form = document.getElementById('composer');
 const input = document.getElementById('input');
@@ -125,7 +133,8 @@ async function getReply(userText){
     body: JSON.stringify({
       messages: messages.filter(m => m.role === 'user' || m.role === 'assistant'),
       name: visitorName,
-      intent: visitorIntent
+      intent: visitorIntent,
+      sessionId: sessionId
     })
   });
   if (!res.ok) throw new Error('chat_failed');

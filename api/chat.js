@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { messages, name, intent } = req.body || {};
+  const { messages, name, intent, sessionId } = req.body || {};
 
   // ---- basic guards: keep these even in v1, they're free insurance ----
   if (!Array.isArray(messages) || messages.length === 0) {
@@ -83,9 +83,29 @@ export default async function handler(req, res) {
     });
 
     const reply = response.text || "Sorry, I couldn't put together an answer just then.";
+
+    // ---- write to the Google Sheet (the notebook) ----
+    // Awaited so the write finishes before this function can be shut down —
+    // but wrapped so a Sheet failure never breaks the reply to the visitor.
+    try {
+      await saveToSheet({ sessionId, name, intent, userText: lastText, replyText: reply });
+    } catch (err) {
+      console.error("sheet write failed:", err);
+    }
+
     res.status(200).json({ reply });
   } catch (err) {
     console.error("chat handler error:", err);
     res.status(500).json({ error: "upstream_failed" });
   }
+}
+
+async function saveToSheet({ sessionId, name, intent, userText, replyText }) {
+  const url = process.env.SHEETS_WEBHOOK_URL;
+  if (!url) return; // not configured yet — skip quietly
+  await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sessionId, name, intent, userText, replyText }),
+  });
 }
