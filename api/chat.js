@@ -102,10 +102,21 @@ export default async function handler(req, res) {
 
 async function saveToSheet({ sessionId, name, intent, userText, replyText }) {
   const url = process.env.SHEETS_WEBHOOK_URL;
-  if (!url) return; // not configured yet — skip quietly
-  await fetch(url, {
+  if (!url) {
+    console.error("sheet write skipped: SHEETS_WEBHOOK_URL is not set");
+    return;
+  }
+  const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sessionId, name, intent, userText, replyText }),
+    redirect: "follow",
   });
+  // fetch() does NOT throw on a non-2xx response — only on total network
+  // failure — so a rejected write would otherwise vanish silently.
+  const bodyText = await res.text();
+  if (!res.ok) {
+    throw new Error(`sheet webhook returned ${res.status}: ${bodyText.slice(0, 300)}`);
+  }
+  console.log("sheet write ok:", bodyText.slice(0, 200));
 }
