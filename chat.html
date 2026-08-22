@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Chat with Nihal's AI twin</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e0e10;--paper:#f6f4ef;--paper-2:#ecebe4;--line:#d9d7cf;--muted:#6b6a64;--accent:#ff5a3c;--accent-2:#3a7dff;--accent-3:#9ae26b}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{color:#d63b1f}
+.page{max-width:720px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;padding:0 20px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--line)}
+.nav .back{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.nav .back:hover{color:var(--ink)}
+.logo{font-family:'Instrument Serif',serif;font-size:22px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em;color:var(--ink)}
+.logo .mark{width:22px;height:22px;border:1px solid var(--ink);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,var(--paper-2) 21% 55%,var(--ink) 56%)}
+.chead{display:flex;align-items:center;gap:12px;padding:18px 0}
+.avatar{width:38px;height:38px;border-radius:50%;flex:none;border:1px solid var(--line);background:radial-gradient(circle at 34% 28%,#fff 0 18%,var(--paper-2) 19% 58%,#cfcdc4 59%)}
+.chead h1{margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:22px;letter-spacing:-.01em;line-height:1.15}
+.status{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--muted);margin-top:3px}
+.status .live{width:6px;height:6px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 0 3px rgba(154,226,107,.25)}
+.thread{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:20px 0 24px;border-top:1px solid var(--line)}
+.msg{display:flex;flex-direction:column;gap:5px;max-width:82%}
+.msg.a{align-self:flex-start;align-items:flex-start}
+.msg.u{align-self:flex-end;align-items:flex-end}
+.bubble{font-size:15.5px;line-height:1.65;padding:13px 16px;border-radius:16px;text-wrap:pretty}
+.msg.a .bubble{background:#fdfcf9;border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg.u .bubble{background:var(--ink);color:var(--paper);border-bottom-right-radius:6px}
+.msg.err .bubble{background:#fdfcf9;border:1px solid var(--accent);color:var(--ink)}
+.stamp{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.typing{display:inline-flex;gap:5px;align-items:center;padding:15px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blip 1.2s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blip{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;max-width:100%}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:#fdfcf9;color:var(--ink);cursor:pointer;transition:border-color .18s,color .18s,transform .18s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.namebox{display:flex;flex-wrap:wrap;gap:9px;align-items:center;align-self:flex-start;padding:4px 0}
+.namebox input{font-family:'Inter',sans-serif;font-size:15px;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);min-width:200px}
+.namebox input:focus{outline:none;border-color:var(--accent-2)}
+.btn{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:background .18s,border-color .18s}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.skip{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--muted);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.skip:hover{color:var(--ink)}
+.composer-wrap{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(246,244,239,0) 0%,var(--paper) 28%);padding:14px 0 18px}
+.composer{display:flex;gap:10px;align-items:center}
+.composer input{flex:1;min-width:0;font-family:'Inter',sans-serif;font-size:15.5px;padding:14px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink)}
+.composer input:focus{outline:none;border-color:var(--accent-2)}
+.send{width:46px;height:46px;flex:none;border-radius:50%;border:0;background:var(--accent);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .18s,transform .18s}
+.send:hover{background:#e8482c}
+.send:active{transform:scale(.94)}
+.send:disabled{opacity:.4;cursor:default}
+.send svg{width:18px;height:18px}
+.fineprint{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);margin:10px 0 0;text-align:center}
+@media(max-width:600px){.page{padding:0 16px}.msg{max-width:88%}.bubble{font-size:15px}.namebox input{min-width:0;flex:1}}
+@media(prefers-reduced-motion:reduce){.typing i{animation:none}}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" data-bg-color="#f6f4ef"><rect width="400" height="400" fill="#f6f4ef"/><rect x="90" y="120" width="220" height="130" rx="26" fill="none" stroke="#0e0e10" stroke-width="8"/><path d="M150 250l-14 38 46-38" fill="none" stroke="#0e0e10" stroke-width="8" stroke-linejoin="round"/><circle cx="255" cy="185" r="12" fill="#ff5a3c"/></svg></template>
+</head>
+<body>
+<div class="page">
+  <nav class="nav" aria-label="primary">
+    <a class="back" href="index.html">← Back to work</a>
+    <div class="logo"><span class="mark"></span> yourname<span style="font-style:italic;opacity:.55">.studio</span></div>
+  </nav>
+
+  <div class="chead">
+    <div class="avatar" aria-hidden="true"></div>
+    <div>
+      <h1>Nihal's AI twin</h1>
+      <div class="status"><span class="live" aria-hidden="true"></span>usually replies instantly</div>
+    </div>
+  </div>
+
+  <div class="thread" id="thread" role="log" aria-live="polite" aria-label="conversation"></div>
+
+  <div class="composer-wrap">
+    <form class="composer" id="composer">
+      <label for="input" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Message</label>
+      <input id="input" type="text" placeholder="Ask about a project, a process, anything" autocomplete="off">
+      <button class="send" type="submit" aria-label="Send message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"></path><path d="M12 5l7 7-7 7"></path></svg></button>
+    </form>
+    <p class="fineprint">This chat is saved so Nihal can follow up.</p>
+  </div>
+</div>
+
+<script>
+/* ---- conversation state ---- */
+let visitorName = null;
+let visitorIntent = null;
+let messages = [];               // {role:'assistant'|'user'|'error', text, at}
+let pendingUI = null;            // 'name' | 'intent' | 'suggestions' | null
+let typing = false;
+
+const thread = document.getElementById('thread');
+const form = document.getElementById('composer');
+const input = document.getElementById('input');
+
+const INTENTS = ["I'm hiring", "I have a project", "Just curious", "Fellow designer"];
+const SUGGESTIONS = ["Walk me through the Sibyl calendar", "How do you handle handoff?", "What tools do you use?"];
+
+const INTENT_REPLY = {
+  "I'm hiring": "Good to know. Nihal has shipped enterprise analytics work end-to-end — research, flows, hi-fi, handoff. The Sibyl calendar redesign is the clearest example: a rejected vendor design rebuilt and approved with no major feedback.",
+  "I have a project": "Tell me a little about it — timeline, platform, and what's blocking you. Nihal usually starts by auditing what exists against the actual requirements before drawing anything.",
+  "Just curious": "Fair enough. The short version: Nihal designs SaaS and enterprise products, mostly untangling dense data into something a team can use daily.",
+  "Fellow designer": "Nice. Then you'll like the process notes — the Sibyl case study covers density tiers, side-drawer patterns, and what it takes to get a client to approve a redesign of a rejected screen."
+};
+
+const CANNED = [
+  "Nihal worked on Sibyl's Content Calendar, Post Insights, Sentiment Analysis, and Social Overview. The calendar is the one written up in full — it started as a rejected vendor design.",
+  "The pattern there was a three-tier density model: cluster, expand, then a side drawer for detail. It kept the calendar readable at high post volume without inventing new components.",
+  "Handoff was done directly with the BAs and devs, working on top of the existing screens so nothing needed a new visual language.",
+  "Figma for design, ChatGPT for early exploration. Nothing exotic — the constraint was always the existing system."
+];
+let cannedIdx = 0;
+
+/* ---- the one place a real API goes ---- */
+function getReply(userText){
+  return new Promise(function(resolve){
+    setTimeout(function(){
+      const t = (userText || '').toLowerCase();
+      if (t.indexOf('email') > -1 || t.indexOf('contact') > -1) {
+        resolve("The fastest route is email — Nihal replies within a day or so.");
+        return;
+      }
+      resolve(CANNED[cannedIdx++ % CANNED.length]);
+    }, 1200);
+  });
+}
+
+/* ---- render ---- */
+function stamp(){
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+function el(tag, cls, text){ const n = document.createElement(tag); if(cls) n.className = cls; if(text != null) n.textContent = text; return n; }
+
+function render(){
+  thread.innerHTML = '';
+  messages.forEach(function(m){
+    const wrap = el('div', 'msg ' + (m.role === 'user' ? 'u' : m.role === 'error' ? 'a err' : 'a'));
+    const b = el('div', 'bubble');
+    b.textContent = m.text;
+    if (m.role === 'error') {
+      b.textContent = 'Something went wrong — you can always email me directly.';
+      const a = el('a', null, 'hello@nihal.studio');
+      a.href = 'mailto:hello@nihal.studio';
+      b.appendChild(document.createTextNode(' '));
+      b.appendChild(a);
+    }
+    wrap.appendChild(b);
+    wrap.appendChild(el('div', 'stamp', m.at));
+    thread.appendChild(wrap);
+  });
+
+  if (typing) {
+    const wrap = el('div', 'msg a');
+    const b = el('div', 'bubble typing');
+    b.setAttribute('aria-label', 'typing');
+    b.appendChild(el('i')); b.appendChild(el('i')); b.appendChild(el('i'));
+    wrap.appendChild(b);
+    thread.appendChild(wrap);
+  }
+
+  if (pendingUI === 'name') {
+    /* name is typed in the composer */
+  }
+
+  if (pendingUI === 'intent') thread.appendChild(chipRow(INTENTS, pickIntent));
+  if (pendingUI === 'suggestions') thread.appendChild(chipRow(SUGGESTIONS, function(t){ send(t); }));
+
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function chipRow(items, onPick){
+  const row = el('div', 'chips');
+  items.forEach(function(label){
+    const c = el('button', 'chip', label);
+    c.type = 'button';
+    c.addEventListener('click', function(){ onPick(label); });
+    row.appendChild(c);
+  });
+  return row;
+}
+
+/* ---- flow ---- */
+function push(role, text){ messages.push({role: role, text: text, at: stamp()}); }
+
+function assistantAfterDelay(text, then){
+  typing = true; render();
+  setTimeout(function(){
+    typing = false; push('assistant', text);
+    if (then) then();
+    render();
+  }, 1200);
+}
+
+function setName(name){
+  visitorName = name || null;
+  pendingUI = null;
+  if (name) push('user', name);
+  render();
+  const who = visitorName ? visitorName + ', what' : 'What';
+  assistantAfterDelay(who + " brings you here today?", function(){ pendingUI = 'intent'; });
+}
+
+function pickIntent(label){
+  visitorIntent = label;
+  pendingUI = null;
+  push('user', label);
+  render();
+  assistantAfterDelay(INTENT_REPLY[label], function(){ pendingUI = 'suggestions'; });
+}
+
+function send(text){
+  text = (text || '').trim();
+  if (!text) return;
+  if (pendingUI === 'name') { setName(text); return; }
+  pendingUI = null;
+  push('user', text);
+  typing = true;
+  render();
+  getReply(text).then(function(reply){
+    typing = false; push('assistant', reply); render();
+  }).catch(function(){
+    typing = false; push('error', ''); render();
+  });
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  send(input.value);
+  input.value = '';
+});
+
+/* ---- boot ---- */
+push('assistant', "Hey! I'm Nihal's AI twin. I can walk you through his work — mind if I ask who I'm talking to?");
+pendingUI = 'name';
+render();
+</script>
+</body></html>
