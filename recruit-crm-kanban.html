@@ -222,7 +222,7 @@ html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-famil
 .dp-single{display:flex;flex-direction:column;gap:20px}
 .decision-head{display:flex;flex-direction:column;gap:14px;padding-bottom:18px;margin-bottom:24px;border-bottom:1px solid var(--line)}
 .decision-head .dk{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.decision-head h4{margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;letter-spacing:-.01em}
+.decision-head h2{margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(26px,3vw,40px);line-height:1.05;letter-spacing:-.01em}
 .decision > p.lead{font-size:15px;line-height:1.6;color:#4a4a4d;max-width:70ch;margin:0 0 24px}
 .decision-pointer p.lead{font-size:14px;line-height:1.6;color:#4a4a4d;font-family:'Inter',sans-serif;max-width:70ch;margin:0 0 24px}
 .decision-pointer p.lead strong{font-weight:600;color:var(--ink)}
@@ -366,19 +366,18 @@ a:hover{color:var(--accent)}
 
 <div class="facts-band">
   <div class="hero-facts">
-    <div class="fact"><span class="lbl">Role</span><span class="val">UX design</span></div>
-    <div class="fact"><span class="lbl">Type</span><span class="val">Product redesign</span></div>
-    <div class="fact"><span class="lbl">Surface</span><span class="val">Kanban, 11 stages</span></div>
-    <div class="fact"><span class="lbl">Observations</span><span class="val">52 logged</span></div>
-    <div class="fact"><span class="lbl">Tools</span><span class="val">Figma</span></div>
+    <div class="fact"><span class="lbl">Role</span><div class="val">UX design</div></div>
+    <div class="fact"><span class="lbl">Type</span><div class="val">Product redesign</div></div>
+    <div class="fact"><span class="lbl">Surface</span><div class="val">Kanban, 11 stages</div></div>
+    <div class="fact"><span class="lbl">Observations</span><div class="val">52 logged</div></div>
+    <div class="fact"><span class="lbl">Tools</span><div class="val">Figma</div></div>
   </div>
 </div>
 
 <section class="section">
   <div class="section-head">
-    <div class="section-num">01</div>
-    <h2 class="section-title">The <em>problem</em></h2>
-    <div class="section-kicker">Where the board stopped helping</div>
+    <div class="section-num">Problem</div>
+    <h2 class="section-title">Where the board stopped <em>helping</em></h2>
   </div>
 
   <div class="two-col">
@@ -401,17 +400,17 @@ a:hover{color:var(--accent)}
   <div class="problems" style="margin-top:44px">
     <div class="problem">
       <span class="num">01</span>
-      <div class="htitle"><h4>Fixed information</h4></div>
+      <div class="htitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><h4>Fixed information</h4></div>
       <p>Every stage showed identical fields. The resume — the artefact a screening decision rests on — wasn't on the card at all, while a job title identical across the whole board took a prime line.</p>
     </div>
     <div class="problem">
       <span class="num">02</span>
-      <div class="htitle"><h4>No sense of time</h4></div>
+      <div class="htitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4.5l3 1.8"/></svg><h4>No sense of time</h4></div>
       <p>Only an absolute date. A candidate untouched for a month looked exactly like one added this morning, so pipelines went stale silently and nobody noticed until someone was lost.</p>
     </div>
     <div class="problem">
       <span class="num">03</span>
-      <div class="htitle"><h4>Poor at scale</h4></div>
+      <div class="htitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20L20 4M4 12L12 4M12 20L20 12"/></svg><h4>Poor at scale</h4></div>
       <p>Moving candidates forward meant a modal and a submit click each. At three hundred applicants the board became a wall of near-identical cards with no way to find what needed attention.</p>
     </div>
   </div>
@@ -419,29 +418,28 @@ a:hover{color:var(--accent)}
 
 <section class="section">
   <div class="section-head">
-    <div class="section-num">02</div>
+    <div class="section-num">Design process</div>
     <h2 class="section-title">How I <em>worked</em></h2>
-    <div class="section-kicker">Process</div>
   </div>
 
   <div class="process-cols">
     <div class="pcol">
-      <span class="pt">01 — Build the mental model</span>
+      <span class="pt">Step 01</span>
       <h5>Learn the job before judging the tool</h5>
       <p>Agency recruiting has its own shape: a client who never logs in, decisions that arrive by email, and a recruiter accountable for a pace she doesn't control. I mapped the hiring process end to end before opening the product, so I'd recognise a real problem rather than an unfamiliar one.</p>
     </div>
     <div class="pcol">
-      <span class="pt">02 — Work the live product</span>
+      <span class="pt">Step 02</span>
       <h5>Fifty-two observations, pinned</h5>
       <p>I loaded realistic candidate data and moved people through all eleven stages, pinning every friction point directly onto screenshots. Working from evidence rather than memory meant each later design decision could be traced back to something I'd actually hit.</p>
     </div>
     <div class="pcol">
-      <span class="pt">03 — Study the field</span>
+      <span class="pt">Step 03</span>
       <h5>One direct competitor, one lateral</h5>
       <p>Joboro, a direct rival, and Trello — the tool Recruit CRM's own documentation calls its board a version of. The lateral comparison turned out to matter more than the direct one.</p>
     </div>
     <div class="pcol">
-      <span class="pt">04 — Rebuild from the product's own language</span>
+      <span class="pt">Step 04</span>
       <h5>Extract, then design</h5>
       <p>I pulled the type scale, colour, spacing and elevation from the running application rather than eyeballing screenshots — then designed inside those constraints, so the work reads as the same product rather than a redesign bolted on.</p>
     </div>
@@ -456,9 +454,8 @@ a:hover{color:var(--accent)}
 
 <section class="section">
   <div class="section-head">
-    <div class="section-num">03</div>
+    <div class="section-num">Field research</div>
     <h2 class="section-title">What the field <em>showed</em></h2>
-    <div class="section-kicker">Competitor analysis</div>
   </div>
 
   <div class="two-col">
@@ -486,14 +483,13 @@ a:hover{color:var(--accent)}
 
 <section class="section decision">
   <div class="section-head">
-    <div class="section-num">04</div>
-    <h2 class="section-title">Key <em>decisions</em></h2>
-    <div class="section-kicker">Two calls worth defending</div>
+    <div class="section-num">Key decisions</div>
+    <h2 class="section-title">Two calls worth <em>defending</em></h2>
   </div>
 
   <div class="decision-head">
     <span class="dk">Decision 01</span>
-    <h4>Ageing as a treatment, not an element</h4>
+    <h2>Ageing as a treatment, not an element</h2>
   </div>
 
   <p class="lead">
@@ -543,8 +539,8 @@ a:hover{color:var(--accent)}
 
 <section class="section">
   <div class="section-head">
-    <div class="section-num">05</div>
-    <h2 class="section-title">The <em>solution</em></h2>
+    <div class="section-num">The solution</div>
+    <h2 class="section-title">The redesigned <em>board</em></h2>
     <a class="proto-cta" href="https://www.figma.com/proto/HS82ZCNrxkH9TxohVPnUIg/RCRM?node-id=70-32000&amp;viewport=3454%2C673%2C0.14&amp;t=gbgY4HLTJ60cEgY3-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;starting-point-node-id=70%3A32000&amp;page-id=67%3A5528" target="_blank" rel="noopener">Open prototype</a>
   </div>
 
@@ -575,9 +571,8 @@ a:hover{color:var(--accent)}
 
 <section class="section">
   <div class="section-head">
-    <div class="section-num">06</div>
+    <div class="section-num">Reflection</div>
     <h2 class="section-title">With more <em>time</em></h2>
-    <div class="section-kicker">What I'd take further</div>
   </div>
 
   <ul class="outcome-check">
